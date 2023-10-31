@@ -20,7 +20,7 @@ pipeline{
         stage('Build Docker Image'){
             steps{
                 script{
-                    sh "docker build -t ajjai007/devops_automation_2 ."
+                    sh "docker build -t ajjai007/devops_integration ."
                 }
             }
         }
@@ -30,7 +30,7 @@ pipeline{
                 script{
                     withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
                         sh "docker login -u ajjai007 -p ${dockerhubpwd}"
-                        sh "docker push ajjai007/devops_automation_2"
+                        sh "docker push ajjai007/devops_integration"
                     }
                 }
             }
@@ -39,7 +39,7 @@ pipeline{
         stage('Run Docker Container'){
             steps{
                 script{
-                    sh "docker run -p 8082:8080 -d ajjai007/devops_automation"
+                    sh "docker run -p 8082:8080 -d ajjai007/devops_integration"
                 }
             }
         }
