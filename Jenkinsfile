@@ -19,8 +19,10 @@ pipeline{
 
         stage('Build Docker Image'){
             steps{
-                script{
-                    sh "docker build -t ajjai007/devops_integration ."
+                 withDockerRegistry(credentialsId: 'docker-cred', url: 'https://registry.hub.docker.com') {
+                    script{
+                        sh "docker build -t ajjai007/devops_integration ."
+                    }
                 }
             }
         }
@@ -29,7 +31,7 @@ pipeline{
             steps{
                 script{
                     withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                        sh "docker login -u ajjai007 -p ${dockerhubpwd}"
+                        sh "docker login --username ajjai007 --password-stdin ${dockerhubpwd}"
                         sh "docker push ajjai007/devops_integration"
                     }
                 }
